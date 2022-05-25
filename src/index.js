@@ -1,36 +1,72 @@
 function fetchMenu () {
    fetch('http://localhost:3000/ramens')
-        .then((res) => res.json())
-        .then((json) => {
+        .then(res => res.json())
+        .then(json => {
+            console.log(json)
             renderRamenImages(json)
-        })
+            })
 }
 
 console.log(fetchMenu())
 
 const renderRamenImages = ramens => {
-    const menuImage = document.getElementById('ramen-menu')
     
     ramens.forEach(ramen => {
     const img  = document.createElement('img')
     img.src = ramen.image
-    menuImage.append(img)
+    document.getElementById('ramen-menu').append(img)
+
+    img.addEventListener('click', () => {
+        const imageToUpdate = document.querySelector('div#ramen-detail img.detail-image')
+        // console.log(imageToUpdate)
+
+        imageToUpdate.src = ramen.image
+        imageToUpdate.alt = ramen.name
+
+        const names = document.querySelector('#ramen-detail h2')
+        // console.log(names)
+        names.textContent = ramen.name
+
+        const restaurant = document.querySelector('#ramen-detail h3')
+        restaurant.textContent = ramen.restaurant
+
+        const rating = document.getElementById('rating-display')
+        rating.textContent = ramen.rating
+
+        const comment = document.getElementById('comment-display')
+        comment.textContent = ramen.comment
     })
+})
+    
 }
 
-const renderRamenDetails = ramens => {
-    const div = document.createElement('div')
+const renderRamenForm = ramen => {
+
     const img = document.createElement('img')
-    const h2 = document.createElement('h2')
-    const h3 = document.createElement('h3')
+    img.src = ramen.image
+    
+    document.getElementById('ramen-menu').append(img)
 
-    img.src = ramens.image
-    h2.textContent = ramens.name
-    h3.textContent = ramens.restaurant
+    img.addEventListener('click', () => {
+        const imageToUpdate = document.querySelector('div#ramen-detail img.detail-image')
+        // console.log(imageToUpdate)
 
-    div.append(img, h2, h3)
-    document.getElementById('ramen-menu').append(div)
+        imageToUpdate.src = ramen.image
+        imageToUpdate.alt = ramen.name
 
+        const names = document.querySelector('#ramen-detail h2')
+        // console.log(names)
+        names.textContent = ramen.name
+
+        const restaurant = document.querySelector('#ramen-detail h3')
+        restaurant.textContent = ramen.restaurant
+
+        const rating = document.getElementById('rating-display')
+        rating.textContent = ramen.rating
+
+        const comment = document.getElementById('comment-display')
+        comment.textContent = ramen.comment
+    })
 }
 
 document.getElementById('new-ramen').addEventListener('submit', (e) => {
@@ -43,11 +79,10 @@ document.getElementById('new-ramen').addEventListener('submit', (e) => {
         rating: e.target.rating.value,
         comment: e.target['new-comment'].value,
     }
-
-    renderRamenDetails(newRamen)
+    renderRamenForm(newRamen)
 })
 
 
-document.addEventListener('DomContentLoaded', function() {
-fetchMenu()
-})
+// document.addEventListener('DOMContentLoaded', function() {
+// fetchMenu()
+// })
